@@ -46,11 +46,6 @@ namespace Visual_Compass
             start_x = Canvas.Width / 2;       //Canvas is the name of the panel control, this defines the centre point
             start_y = Canvas.Height / 2;
 
-            //todo remove if not using the picturebox
-           // start_x = pictureBox1.Width / 2;
-            //start_y = pictureBox1.Height / 2;
-          //  Canvas.BackgroundImage = baseImage;
-            
         }
 
         private void Canvas_Paint(object sender, PaintEventArgs e)
@@ -99,14 +94,27 @@ namespace Visual_Compass
             Canvas.Invalidate();
          
             Azimuth = hScrollBar1.Value;
-            //Canvas.Refresh();
-            
-           //Canvas.Invalidate();
-            
+                    
            
             
         }
 
-        
+        /*
+         * The code below is incuded to stop graphics flicker. I don't know how it works except for the explanation given on stackoverflow here:
+         * https://stackoverflow.com/questions/8046560/how-to-stop-flickering-c-sharp-winforms
+         * 'enables double-buffering for all controls from the form level down'
+         * needs testing to see there are o side effects it says...
+         */
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams handleParam = base.CreateParams;
+                handleParam.ExStyle |= 0x02000000;   // WS_EX_COMPOSITED       
+                return handleParam;
+            }
+        }
+
+
     }
 }
